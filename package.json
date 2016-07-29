@@ -1,0 +1,16 @@
+{
+  "name": "Pokelert",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react": "^15.2.0",
+    "react-native": "^0.30.0",
+    "react-native-drawer": "^2.2.6",
+    "react-native-event-horizon": "^1.0.1",
+    "react-native-maps": "^0.7.1",
+    "react-native-side-menu": "^0.20.0"
+  }
+}
