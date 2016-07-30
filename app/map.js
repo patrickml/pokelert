@@ -97,7 +97,12 @@ Map.defaultProps = {
 
 const onPropsChange = (props, onData) => {
   const { pokemon, track } = EventHorizon.subscribe('map');
-  onData(null, { pokemon, track });
+  const { filtered } = EventHorizon.subscribe('menu');
+  const newList = pokemon.filter((o) => filtered.indexOf(String(o.pokemonId)) === -1);
+  onData(null, {
+    pokemon: newList,
+    track,
+  });
 };
 
 export default composeWithTracker(onPropsChange, Loading, Loading)(Map);
