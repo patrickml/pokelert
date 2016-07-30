@@ -1,39 +1,39 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import React, { Component, PropTypes } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
+import MapView from 'react-native-maps';
 import { composeWithTracker } from 'react-komposer';
 import EventHorizon from 'react-native-event-horizon';
-import _ from 'lodash';
 import Loading from './loading';
-import { updateRegion } from './actions/map.actions';
-import { openMenu } from './actions/map.actions';
+import updateLocation from './actions/location.actions';
+import fetchPokemon from './fetch';
 import PokeMarker from './pokemarker';
-import refreshIcon from './assets/images/icons/refresh.png';
-import navigationIcon from './assets/images/icons/navigation.png';
+import RefeshIcon from './icons/refresh.icon';
+import MenuIcon from './icons/menu.icon';
+import NavigationIcon from './icons/navigation.icon';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  map: {
+    flex: 1,
+  },
+});
 
 class Map extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      region: {
-        latitude: 34.008824881138935,
-        longitude: -118.49761247634888,
-      },
-      followsUserLocation: true,
-    };
     this.toggleNavigation = this.toggleNavigation.bind(this);
+    this.triggerRefresh = this.triggerRefresh.bind(this);
   }
 
   componentDidMount() {
-    this.timer = setInterval(() => {
-      console.log('updating pokemon');
-      updateRegion(this.state.region);
-    }, 60000);
-    updateRegion(this.state.region);
+    setTimeout(fetchPokemon, 3000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer);
+
   }
 
   /**
@@ -45,82 +45,59 @@ class Map extends Component {
     });
   }
 
+  triggerRefresh() {
+    const { time } = EventHorizon.subscribe('timer');
+    if (time === 0) {
+      fetchPokemon();
+    } else {
+      Alert.alert(
+        'Please Wait',
+        `You still have ${time} seconds before you can refresh`,
+        [
+          { text: 'OK' },
+        ]
+      );
+    }
+  }
+
   render() {
-    const { pokemon } = this.props;
-    const { region, followsUserLocation } = this.state;
+    const { pokemon, track } = this.props;
     return (
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          onRegionChangeComplete={(region) => this.setState({ region })}
-          followsUserLocation={followsUserLocation}
+          onRegionChangeComplete={updateLocation}
+          followsUserLocation={track}
           showsUserLocation
           zoomEnabled
         >
           {
-            pokemon.map((pokemon, index) => (
-              <PokeMarker {...pokemon} key={pokemon.id} index={index} />
+            pokemon.map((poke, index) => (
+              <PokeMarker {...poke} key={poke.id} index={index} />
             ))
           }
         </MapView>
-        <TouchableOpacity
-          onPress={() => updateRegion(this.state.region)}
-          style={styles.rc}
-        >
-          <Image source={refreshIcon} style={styles.refresh} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.toggleNavigation()}
-          style={styles.nc}
-        >
-          <Image
-            source={navigationIcon}
-            style={[styles.navigation, followsUserLocation && { opacity: 1 } || { opacity: 0.5 }]}
-          />
-        </TouchableOpacity>
+        <RefeshIcon />
+        <MenuIcon />
+        <NavigationIcon track={track} />
       </View>
     );
   }
 }
 
 Map.propTypes = {
-  pokemon: React.PropTypes.array,
-}
+  pokemon: PropTypes.array,
+  track: PropTypes.bool,
+};
 
-Map.defaultProps = {}
-
-const styles = StyleSheet.create({
-  rc: {
-    position: 'absolute',
-    top: 30,
-    right: 15,
-    opacity: 0.5,
-  },
-  refresh: {
-    width: 20,
-    height: 20,
-  },
-  nc: {
-    position: 'absolute',
-    bottom: 20,
-    left: 10,
-  },
-  navigation: {
-    width: 30,
-    height: 30,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'column'
-  },
-  map: {
-    flex: 1,
-  }
-});
+Map.defaultProps = {
+  pokemon: [],
+  track: true,
+};
 
 const onPropsChange = (props, onData) => {
-  const { pokemon } = EventHorizon.subscribe('map');
-  onData(null, { pokemon });
+  const { pokemon, track } = EventHorizon.subscribe('map');
+  onData(null, { pokemon, track });
 };
 
 export default composeWithTracker(onPropsChange, Loading, Loading)(Map);

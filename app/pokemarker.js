@@ -1,13 +1,21 @@
-import React, { PropTypes, Component } from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import React, { PropTypes } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
-import { viewPokemon } from './actions/modal.actions';
 import CountDown from './countdown';
 import getPokemon from './pokedex';
 
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+  image: {
+
+  },
+});
+
 const PokeMarker = ({ latitude, longitude, pokemonId, expiration_time, index }) => {
-  const { name, image } = getPokemon(pokemonId);
-  const interval = -(new Date().getTime() - (expiration_time * 1000))/1000;
+  const { image } = getPokemon(pokemonId);
+  const interval = -(new Date().getTime() - (expiration_time * 1000)) / 1000;
   return (
     <Marker coordinate={{ latitude, longitude }}>
       <View style={styles.container}>
@@ -19,16 +27,11 @@ const PokeMarker = ({ latitude, longitude, pokemonId, expiration_time, index }) 
 };
 
 PokeMarker.propTypes = {
-  image: PropTypes.number,
-}
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  image: {
-
-  }
-});
+  latitude: PropTypes.number,
+  longitude: PropTypes.number,
+  pokemonId: PropTypes.number,
+  expiration_time: PropTypes.number,
+  index: PropTypes.number,
+};
 
 export default PokeMarker;

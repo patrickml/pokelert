@@ -1,11 +1,9 @@
 import EventHorizon from 'react-native-event-horizon';
 
 const defaultStore = {
-  pokemon: [],
-  loading: false,
-  track: true,
+  time: 0,
 };
 
-EventHorizon.createStore('map', defaultStore);
+EventHorizon.createStore('timer', defaultStore);
 
 export default defaultStore;

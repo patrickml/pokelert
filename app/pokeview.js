@@ -9,9 +9,7 @@ const PokeModal = ({ open }) => (
     animationType={"slide"}
     transparent={false}
     visible={open}
-  >
-
-  </Modal>
+  />
 );
 
 PokeModal.propTypes = {

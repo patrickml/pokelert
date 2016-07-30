@@ -16,7 +16,7 @@ export default class Pokeball extends Component {
       {
         toValue: 360 * 20,
         duration: 600 * 20,
-        easing: Easing.inOut(Easing.ease)
+        easing: Easing.inOut(Easing.ease),
       }
     ).start(this.animate);
   }
@@ -34,10 +34,10 @@ export default class Pokeball extends Component {
             {
               rotate: this.state.animation.interpolate({
                 inputRange: [0, 360],
-                outputRange: ['0deg', '360deg']
-              })
+                outputRange: ['0deg', '360deg'],
+              }),
             },
-          ]
+          ],
         }}
       />
     );
