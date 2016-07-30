@@ -7,7 +7,6 @@ EventHorizon.createAction('map', 'SET_MAP_LOADING', (store, data, update) => {
 });
 
 EventHorizon.createAction('map', 'TOGGLE_MAP_TRACKING', (store, data, update) => {
-  console.log(store.track);
   update({
     track: !store.track,
   });

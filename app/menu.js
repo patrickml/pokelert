@@ -44,7 +44,6 @@ Menu.propTypes = {
 };
 
 const onPropsChange = (props, onData) => {
-  console.log('menu props');
   onData(null, EventHorizon.subscribe('menu'));
 };
 
