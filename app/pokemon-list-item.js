@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,10 +25,12 @@ export default class ListItem extends Component {
   render() {
     const { name, image } = this.props;
     return (
-      <View style={styles.container}>
-        <Image source={image} />
-        <Text style={styles.name}>{name}</Text>
-      </View>
+      <TouchableOpacity>
+        <View style={styles.container}>
+          <Image source={image} />
+          <Text style={styles.name}>{name}</Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 }

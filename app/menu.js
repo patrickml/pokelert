@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Drawer from 'react-native-side-menu';
 import EventHorizon from 'react-native-event-horizon';
 import { composeWithTracker } from 'react-komposer';
