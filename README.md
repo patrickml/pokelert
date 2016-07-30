@@ -3,10 +3,11 @@ Pokélert is an Open Source Pokémon GO pokemon tracker. It uses the https://pok
 
 ## ToDo
 - [x]  Finish Menu
-- [ ]  List Pokemon in menu and add filters
-- [ ]  List Pokemon in menu and toggle tracking
+- [x]  List Pokemon in menu
+- [ ]  List Pokemon in menu and toggle filter
 - [ ]  Use pokemon API to pull up information about the pokemon when clicked
-- [ ]  Add Map Markers 
+- [x]  Add Map Markers 
+- [ ]  Add Map Callouts 
 - [ ]  Add Background GeoLocation Services
 - [ ]  Notifiy use when pokemon they want are near
 - [ ]  Add local storage to store user filters and tracking
@@ -25,7 +26,7 @@ To install this application you will need to have [React Native](https://faceboo
 
 ## History
 
-version 0.0.1
+Version 0.0.2
 
 ## Credits
 
