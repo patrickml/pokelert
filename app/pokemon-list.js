@@ -13,16 +13,21 @@ class PokemonList extends Component {
   }
 
   render() {
+    const { filtered } = this.props;
     return (
       <ScrollView>
         {
           this.state.pokedex.map(({ id, data }) => (
-            <PokemonListItem {...data} id={id} key={id} />
+            <PokemonListItem {...data} id={id} key={id} filtered={filtered.indexOf(id) !== -1} />
           ))
         }
       </ScrollView>
     );
   }
 }
+
+PokemonList.propTypes = {
+  filtered: PropTypes.array,
+};
 
 export default PokemonList;

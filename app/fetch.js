@@ -17,7 +17,6 @@ const config = {
 const fetchData = ({ jobId, latitude, longitude }) => {
   fetch(`https://pokevision.com/map/data/${latitude}/${longitude}/${jobId}`, config)
     .then(parseData)
-    .then((res) => { console.log(res); return res; })
     .then((res) => {
       if (res.jobStatus === 'in_progress') {
         setTimeout(() => fetchData({ jobId, latitude, longitude }), 2000);
@@ -37,7 +36,6 @@ export default () => {
     startTimer();
     fetch(`https://pokevision.com/map/scan/${latitude}/${longitude}`, config)
       .then(parseData)
-      .then((res) => { console.log(res); return res; })
       .then(({ jobId }) => setTimeout(() => fetchData({ jobId, latitude, longitude }), 2000))
       .catch(e => console.log(e));
   }
