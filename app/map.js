@@ -1,15 +1,54 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { View, StyleSheet } from 'react-native';
+import MapView from 'react-native-maps';
 import { composeWithTracker } from 'react-komposer';
 import EventHorizon from 'react-native-event-horizon';
-import _ from 'lodash';
 import Loading from './loading';
 import { updateRegion } from './actions/map.actions';
-import { openMenu } from './actions/map.actions';
+import { toggleMenu } from './actions/menu.actions';
 import PokeMarker from './pokemarker';
+import Icon from './icon';
 import refreshIcon from './assets/images/icons/refresh.png';
 import navigationIcon from './assets/images/icons/navigation.png';
+import menuIcon from './assets/images/icons/menu/menu.png';
+
+const styles = StyleSheet.create({
+  rc: {
+    position: 'absolute',
+    top: 30,
+    right: 15,
+    opacity: 0.5,
+  },
+  refresh: {
+    width: 20,
+    height: 20,
+  },
+  nc: {
+    position: 'absolute',
+    bottom: 20,
+    left: 10,
+  },
+  navigation: {
+    width: 30,
+    height: 30,
+  },
+  mc: {
+    position: 'absolute',
+    top: 30,
+    left: 10,
+  },
+  menu: {
+    width: 20,
+    height: 20,
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  map: {
+    flex: 1,
+  },
+});
 
 class Map extends Component {
   constructor(props) {
@@ -19,7 +58,7 @@ class Map extends Component {
         latitude: 34.008824881138935,
         longitude: -118.49761247634888,
       },
-      followsUserLocation: true,
+      followsUserLocation: false,
     };
     this.toggleNavigation = this.toggleNavigation.bind(this);
   }
@@ -48,36 +87,39 @@ class Map extends Component {
   render() {
     const { pokemon } = this.props;
     const { region, followsUserLocation } = this.state;
+    const navigationStyle = [
+      styles.navigation, followsUserLocation && { opacity: 1 } || { opacity: 0.5 },
+    ];
     return (
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          onRegionChangeComplete={(region) => this.setState({ region })}
+          onRegionChangeComplete={(r) => this.setState({ region: r })}
           followsUserLocation={followsUserLocation}
           showsUserLocation
           zoomEnabled
         >
           {
-            pokemon.map((pokemon, index) => (
-              <PokeMarker {...pokemon} key={pokemon.id} index={index} />
+            pokemon.map((poke, index) => (
+              <PokeMarker {...poke} key={poke.id} index={index} />
             ))
           }
         </MapView>
-        <TouchableOpacity
-          onPress={() => updateRegion(this.state.region)}
-          style={styles.rc}
-        >
-          <Image source={refreshIcon} style={styles.refresh} />
-        </TouchableOpacity>
-        <TouchableOpacity
+        <Icon
+          onPress={() => toggleMenu()}
+          styles={{ container: styles.mc, image: styles.menu }}
+          image={menuIcon}
+        />
+        <Icon
+          onPress={() => updateRegion(region)}
+          styles={{ container: styles.rc, image: styles.refresh }}
+          image={refreshIcon}
+        />
+        <Icon
           onPress={() => this.toggleNavigation()}
-          style={styles.nc}
-        >
-          <Image
-            source={navigationIcon}
-            style={[styles.navigation, followsUserLocation && { opacity: 1 } || { opacity: 0.5 }]}
-          />
-        </TouchableOpacity>
+          styles={{ container: styles.nc, image: navigationStyle }}
+          image={navigationIcon}
+        />
       </View>
     );
   }
@@ -85,38 +127,11 @@ class Map extends Component {
 
 Map.propTypes = {
   pokemon: React.PropTypes.array,
-}
+};
 
-Map.defaultProps = {}
-
-const styles = StyleSheet.create({
-  rc: {
-    position: 'absolute',
-    top: 30,
-    right: 15,
-    opacity: 0.5,
-  },
-  refresh: {
-    width: 20,
-    height: 20,
-  },
-  nc: {
-    position: 'absolute',
-    bottom: 20,
-    left: 10,
-  },
-  navigation: {
-    width: 30,
-    height: 30,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'column'
-  },
-  map: {
-    flex: 1,
-  }
-});
+Map.defaultProps = {
+  pokemon: [],
+};
 
 const onPropsChange = (props, onData) => {
   const { pokemon } = EventHorizon.subscribe('map');

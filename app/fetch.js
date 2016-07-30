@@ -1,12 +1,13 @@
-import EventHorizon from 'react-native-event-horizon';
 import { updatePokemon, setLoading } from './actions/map.actions.js';
 
-const parseData = (res) => res._bodyInit.type === 'text/html; charset=utf-8' && { pokemon: [] } || res.json();
+const parseData = (res) => (
+  res._bodyInit.type === 'text/html; charset=utf-8' && { pokemon: [] } || res.json()
+);
 
 const config = {
   method: 'GET',
   headers: {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
   },
 };
@@ -17,15 +18,15 @@ const fetchData = ({ jobId, latitude, longitude }) => {
     .then((res) => { console.log(res); return res; })
     .then((res) => {
       if (res.jobStatus === 'in_progress') {
-        setTimeout(() => fetchData({ jobId, latitude, longitude }), 2000)
+        setTimeout(() => fetchData({ jobId, latitude, longitude }), 2000);
       } else if (res.jobStatus === 'unknown') {
-        setTimeout(() => fetchData({ jobId, latitude, longitude }), 30000)
+        setTimeout(() => fetchData({ jobId, latitude, longitude }), 30000);
       } else {
-        updatePokemon(res.pokemon)
+        updatePokemon(res.pokemon);
       }
     })
-    .catch(e => console.log(e))
-}
+    .catch(e => console.log(e));
+};
 
 export default ({ latitude, longitude }) => {
   console.log(latitude, longitude);
@@ -34,5 +35,5 @@ export default ({ latitude, longitude }) => {
     .then(parseData)
     .then((res) => { console.log(res); return res; })
     .then(({ jobId }) => setTimeout(() => fetchData({ jobId, latitude, longitude }), 2000))
-    .catch(e => console.log(e))
+    .catch(e => console.log(e));
 };

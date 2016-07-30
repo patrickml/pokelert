@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { View, Image, StyleSheet, Animated, Easing } from 'react-native';
 import EventHorizon from 'react-native-event-horizon';
 import { composeWithTracker } from 'react-komposer';
@@ -7,15 +7,29 @@ import normal from './assets/images/pokeballs/normal.png';
 import great from './assets/images/pokeballs/great.png';
 import ultra from './assets/images/pokeballs/ultra.png';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'absolute',
+    top: 30,
+    left: 40,
+    flexDirection: 'row',
+  },
+});
+
 class Fetching extends Component {
   constructor(props) {
     super(props);
     this.state = {
       normalA: new Animated.Value(0),
       greatA: new Animated.Value(0),
-      ultraA: new Animated.Value(0)
-    }
+      ultraA: new Animated.Value(0),
+    };
     this.animate = this.animate.bind(this);
+  }
+
+  componentDidMount() {
+    this.animate();
   }
 
   animate() {
@@ -23,42 +37,41 @@ class Fetching extends Component {
     this.state.greatA.setValue(0);
     this.state.ultraA.setValue(0);
 
-    const normal = Animated.timing(
+    // normal ball animation
+    const n = Animated.timing(
       this.state.normalA,
       {
         toValue: 360,
         duration: 600,
-        easing: Easing.inOut(Easing.ease)
+        easing: Easing.inOut(Easing.ease),
       }
     );
 
-    const great = Animated.timing(
+    // great ball animation
+    const g = Animated.timing(
       this.state.greatA,
       {
         toValue: 360,
         duration: 600,
-        easing: Easing.inOut(Easing.ease)
+        easing: Easing.inOut(Easing.ease),
       }
     );
 
-    const ultra = Animated.timing(
+    // ultra ball animation
+    const u = Animated.timing(
       this.state.ultraA,
       {
         toValue: 360,
         duration: 600,
-        easing: Easing.inOut(Easing.ease)
+        easing: Easing.inOut(Easing.ease),
       }
     );
 
-    normal.start(() => great.start(() => ultra.start(() => this.animate())) );
-  }
-
-  componentDidMount() {
-    this.animate()
+    n.start(() => g.start(() => u.start(() => this.animate())));
   }
 
   render() {
-    if(!this.props.loading) {
+    if (!this.props.loading) {
       return false;
     }
     return (
@@ -72,10 +85,10 @@ class Fetching extends Component {
               {
                 rotate: this.state.normalA.interpolate({
                   inputRange: [0, 360],
-                  outputRange: ['0deg', '360deg']
-                })
+                  outputRange: ['0deg', '360deg'],
+                }),
               },
-            ]
+            ],
           }}
         />
         <Animated.Image
@@ -87,10 +100,10 @@ class Fetching extends Component {
               {
                 rotate: this.state.greatA.interpolate({
                   inputRange: [0, 360],
-                  outputRange: ['0deg', '360deg']
-                })
+                  outputRange: ['0deg', '360deg'],
+                }),
               },
-            ]
+            ],
           }}
         />
         <Animated.Image
@@ -102,10 +115,10 @@ class Fetching extends Component {
               {
                 rotate: this.state.ultraA.interpolate({
                   inputRange: [0, 360],
-                  outputRange: ['0deg', '360deg']
-                })
+                  outputRange: ['0deg', '360deg'],
+                }),
               },
-            ]
+            ],
           }}
         />
       </View>
@@ -113,15 +126,9 @@ class Fetching extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'absolute',
-    top: 30,
-    left: 10,
-    flexDirection: 'row'
-  },
-});
+Fetching.propTypes = {
+  loading: PropTypes.bool,
+};
 
 export default composeWithTracker((props, onData) => {
   const { loading } = EventHorizon.subscribe('map');
