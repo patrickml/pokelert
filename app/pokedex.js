@@ -315,3 +315,4 @@ for (let i = 1; i < 150; i++) {
 }
 
 export default (id) => pokedex[id];
+export const getPokedex = () => pokedex;

@@ -1,22 +1,25 @@
 import React, { PropTypes } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Drawer from 'react-native-side-menu';
 import EventHorizon from 'react-native-event-horizon';
 import { composeWithTracker } from 'react-komposer';
 import { setMenuState } from './actions/menu.actions';
 import Loading from './loading';
+import PokemonList from './pokemon-list';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#e2e2e2',
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 15,
+    backgroundColor: '#fff',
   },
 });
 
 const MenuContent = () => (
   <View style={styles.container}>
-    <Text>Coming soon...</Text>
+    <PokemonList />
   </View>
 );
 
