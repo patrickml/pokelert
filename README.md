@@ -2,7 +2,7 @@
 Pokélert is an Open Source Pokémon GO pokemon tracker. It uses the https://pokevision.com/ API to perform lookups. The Goal of this application is to provide background notifications of pokemon in your area. i.e Theres a Charazard 500m away!
 
 ## ToDo
-- [ ]  Finish Menu
+- [x]  Finish Menu
 - [ ]  List Pokemon in menu and add filters
 - [ ]  List Pokemon in menu and toggle tracking
 - [ ]  Use pokemon API to pull up information about the pokemon when clicked
@@ -13,7 +13,7 @@ Pokélert is an Open Source Pokémon GO pokemon tracker. It uses the https://pok
 
 ## Installation
 
-To install this application you will need to have https://facebook.github.io/react-native/ installed you can follow there [getting started](https://facebook.github.io/react-native/docs/getting-started.html#content) guide.
+To install this application you will need to have [React Native](https://facebook.github.io/react-native/) installed you can follow their [getting started](https://facebook.github.io/react-native/docs/getting-started.html#content) guide.
 
 ## Contributing
 
