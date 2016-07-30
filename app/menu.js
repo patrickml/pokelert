@@ -17,29 +17,33 @@ const styles = StyleSheet.create({
   },
 });
 
-const MenuContent = () => (
+const MenuContent = ({ filtered }) => (
   <View style={styles.container}>
-    <PokemonList />
+    <PokemonList filtered={filtered} />
   </View>
 );
 
-const Menu = ({ open, children }) => (
+const Menu = ({ open, children, filtered }) => (
   <Drawer
     isOpen={open}
     onChange={setMenuState}
-    menu={<MenuContent />}
+    menu={<MenuContent filtered={filtered} />}
   >
     {children}
   </Drawer>
 );
 
+MenuContent.propTypes = {
+  filtered: PropTypes.array,
+};
+
 Menu.propTypes = {
   open: PropTypes.bool,
+  filtered: PropTypes.array,
   children: PropTypes.any,
 };
 
 const onPropsChange = (props, onData) => {
-  console.log('menu props');
   onData(null, EventHorizon.subscribe('menu'));
 };
 

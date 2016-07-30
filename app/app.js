@@ -12,6 +12,7 @@ import './index';
 import Map from './map';
 import Fetching from './fetching';
 import Menu from './menu';
+import { loadLocalData } from './util/fs';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,5 +29,7 @@ const App = () => (
     </View>
   </Menu>
 );
+
+loadLocalData();
 
 AppRegistry.registerComponent('pokelert', () => App);
