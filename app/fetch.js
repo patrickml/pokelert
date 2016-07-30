@@ -1,4 +1,6 @@
-import { updatePokemon, setLoading } from './actions/map.actions.js';
+import EventHorizon from 'react-native-event-horizon';
+import { updatePokemon, setLoading } from './actions/map.actions';
+import { startTimer } from './actions/timer.actions';
 
 const parseData = (res) => (
   res._bodyInit.type === 'text/html; charset=utf-8' && { pokemon: [] } || res.json()
@@ -28,12 +30,15 @@ const fetchData = ({ jobId, latitude, longitude }) => {
     .catch(e => console.log(e));
 };
 
-export default ({ latitude, longitude }) => {
-  console.log(latitude, longitude);
-  setLoading();
-  fetch(`https://pokevision.com/map/scan/${latitude}/${longitude}`, config)
-    .then(parseData)
-    .then((res) => { console.log(res); return res; })
-    .then(({ jobId }) => setTimeout(() => fetchData({ jobId, latitude, longitude }), 2000))
-    .catch(e => console.log(e));
+export default () => {
+  const { latitude, longitude } = EventHorizon.subscribe('location');
+  if (latitude && longitude) {
+    setLoading();
+    startTimer();
+    fetch(`https://pokevision.com/map/scan/${latitude}/${longitude}`, config)
+      .then(parseData)
+      .then((res) => { console.log(res); return res; })
+      .then(({ jobId }) => setTimeout(() => fetchData({ jobId, latitude, longitude }), 2000))
+      .catch(e => console.log(e));
+  }
 };

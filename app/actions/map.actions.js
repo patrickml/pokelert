@@ -1,15 +1,4 @@
 import EventHorizon from 'react-native-event-horizon';
-import fetchPokemon from '../fetch';
-
-EventHorizon.createAction('map', 'UPDATE_MAP_REGION', (store, region, update) => {
-  if (region && region.latitude) {
-    update({
-      location: region,
-    });
-  }
-
-  fetchPokemon(region || store.location);
-});
 
 EventHorizon.createAction('map', 'SET_MAP_LOADING', (store, data, update) => {
   update({
@@ -17,8 +6,14 @@ EventHorizon.createAction('map', 'SET_MAP_LOADING', (store, data, update) => {
   });
 });
 
+EventHorizon.createAction('map', 'TOGGLE_MAP_TRACKING', (store, data, update) => {
+  console.log(store.track);
+  update({
+    track: !store.track,
+  });
+});
+
 EventHorizon.createAction('map', 'UPDATE_MAP_POKEMON', (store, pokemon, update) => {
-  console.log(pokemon);
   update({
     pokemon,
     loading: false,
@@ -34,7 +29,7 @@ EventHorizon.createAction('map', 'REMOVE_MAP_POKEMON', (store, index, update) =>
   });
 });
 
-export const updateRegion = (region) => EventHorizon.dispatch('UPDATE_MAP_REGION', region);
-export const setLoading = () => EventHorizon.dispatch('SET_MAP_LOADING', {});
+export const setLoading = () => EventHorizon.dispatch('SET_MAP_LOADING');
+export const toggleNavigation = () => EventHorizon.dispatch('TOGGLE_MAP_TRACKING');
 export const updatePokemon = (pokemon) => EventHorizon.dispatch('UPDATE_MAP_POKEMON', pokemon);
 export const removePokemon = (index) => EventHorizon.dispatch('REMOVE_MAP_POKEMON', index);
